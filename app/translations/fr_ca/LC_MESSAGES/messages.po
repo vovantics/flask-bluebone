@@ -1,0 +1,306 @@
+# French (Canada) translations for PROJECT.
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2013-02-27 06:07-0500\n"
+"PO-Revision-Date: 2013-02-27 06:30-0500\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: fr_CA <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: app/__init__.py:83
+msgid "Please log in to access this page."
+msgstr ""
+
+#: app/__init__.py:86
+msgid "To protect your account, please reauthenticate to access this page."
+msgstr ""
+
+#: app/account/forms.py:13 app/account/forms.py:22 app/home/forms.py:11
+msgid "Email address"
+msgstr ""
+
+#: app/account/forms.py:13 app/account/forms.py:33 app/users/forms.py:11
+msgid "That doesn't look like an email."
+msgstr ""
+
+#: app/account/forms.py:14 app/account/forms.py:23 app/account/forms.py:44
+#: app/account/forms.py:73
+msgid "Password"
+msgstr ""
+
+#: app/account/forms.py:16
+msgid "Log me in!"
+msgstr ""
+
+#: app/account/forms.py:21 app/account/forms.py:98
+msgid "Username"
+msgstr ""
+
+#: app/account/forms.py:25
+msgid "Passwords must match"
+msgstr ""
+
+#: app/account/forms.py:27
+msgid "Repeat Password"
+msgstr ""
+
+#: app/account/forms.py:29
+msgid "Create account"
+msgstr ""
+
+#: app/account/forms.py:33 app/users/forms.py:9
+msgid "Your email"
+msgstr ""
+
+#: app/account/forms.py:35
+msgid "Change Password URL"
+msgstr ""
+
+#: app/account/forms.py:40 app/users/forms.py:14
+msgid "Send instructions"
+msgstr ""
+
+#: app/account/forms.py:45
+msgid "Password is required"
+msgstr ""
+
+#: app/account/forms.py:46
+msgid "Password again"
+msgstr ""
+
+#: app/account/forms.py:47 app/account/forms.py:61
+msgid "Passwords don't match"
+msgstr ""
+
+#: app/account/forms.py:48
+msgid "Reset Password"
+msgstr ""
+
+#: app/account/forms.py:53
+msgid "New password"
+msgstr ""
+
+#: app/account/forms.py:55
+msgid "New password is required"
+msgstr ""
+
+#: app/account/forms.py:59
+msgid "New password again"
+msgstr ""
+
+#: app/account/forms.py:64
+msgid "Change Password"
+msgstr ""
+
+#: app/account/forms.py:68
+msgid "Status"
+msgstr ""
+
+#: app/account/forms.py:74
+msgid "Reauthenticate"
+msgstr ""
+
+#: app/account/forms.py:80
+msgid "First Name"
+msgstr ""
+
+#: app/account/forms.py:89
+msgid "Last Name"
+msgstr ""
+
+#: app/account/forms.py:106
+#, python-format
+msgid "Combination of letters/digits/underscore, at least %s characters."
+msgstr ""
+
+#: app/account/forms.py:109
+msgid "Email"
+msgstr ""
+
+#: app/account/forms.py:111
+msgid "Doesn't look like a valid email."
+msgstr ""
+
+#: app/account/forms.py:123
+msgid "Gender"
+msgstr ""
+
+#: app/account/forms.py:130
+msgid "Date of Birth"
+msgstr ""
+
+#: app/account/forms.py:133
+msgid "Phone Number"
+msgstr ""
+
+#: app/account/forms.py:136
+msgid "Biography"
+msgstr ""
+
+#: app/account/forms.py:144
+msgid "Website"
+msgstr ""
+
+#: app/account/forms.py:149
+msgid "Save"
+msgstr ""
+
+#: app/account/forms.py:153
+msgid "I'd like to delete my account"
+msgstr ""
+
+#: app/account/views.py:53
+msgid "Profile updated."
+msgstr ""
+
+#: app/account/views.py:72
+msgid "Account deleted."
+msgstr ""
+
+#: app/account/views.py:88
+#, python-format
+msgid "Welcome %s"
+msgstr ""
+
+#: app/account/views.py:92
+msgid "This account is inactive."
+msgstr ""
+
+#: app/account/views.py:94
+msgid "Wrong email or password."
+msgstr ""
+
+#: app/account/views.py:109
+msgid "Reauthenticated."
+msgstr ""
+
+#: app/account/views.py:111
+msgid "Password is wrong."
+msgstr ""
+
+#: app/account/views.py:119
+msgid "You were logged out."
+msgstr ""
+
+#: app/account/views.py:148
+msgid "Thanks for registering"
+msgstr ""
+
+#: app/account/views.py:196
+msgid "Sorry, no user found for that email address."
+msgstr ""
+
+#: app/account/views.py:221
+msgid "Your password has been changed, please log in again"
+msgstr ""
+
+#: app/home/forms.py:10
+msgid "Full Name"
+msgstr ""
+
+#: app/home/forms.py:12
+msgid "Subject"
+msgstr ""
+
+#: app/home/forms.py:14
+msgid "Message"
+msgstr ""
+
+#: app/home/forms.py:22
+msgid "Send Message"
+msgstr ""
+
+#: app/home/views.py:66
+msgid "Thanks for your message. We'll get back to you shortly."
+msgstr ""
+
+#: app/sessions/views.py:75
+msgid "Wrong email/password."
+msgstr "Mauvaise email / mot de passe."
+
+#: app/templates/errors/401.html:1 app/templates/errors/401.html:5
+msgid "Unauthorized"
+msgstr ""
+
+#: app/templates/errors/401.html:6 app/templates/errors/403.html:6
+msgid "You shall not pass!"
+msgstr ""
+
+#: app/templates/errors/403.html:1
+msgid "Forbidden page"
+msgstr ""
+
+#: app/templates/errors/403.html:5
+msgid "Forbidden Page"
+msgstr ""
+
+#: app/templates/errors/404.html:1
+msgid "Page Not Found :("
+msgstr ""
+
+#: app/templates/errors/404.html:6
+msgid "Sorry, but the page you were trying to view does not exist."
+msgstr ""
+
+#: app/templates/errors/404.html:7
+msgid "It looks like this was the result of either:"
+msgstr ""
+
+#: app/templates/errors/404.html:9
+msgid "a mistyped address"
+msgstr ""
+
+#: app/templates/errors/404.html:10
+msgid "an out-of-date link"
+msgstr ""
+
+#: app/templates/errors/405.html:1 app/templates/errors/405.html:5
+msgid "Method Not Allowed"
+msgstr ""
+
+#: app/templates/errors/405.html:6
+msgid "Sorry, but the page you were trying to view is not allowed."
+msgstr ""
+
+#: app/templates/errors/410.html:1 app/templates/errors/410.html:5
+msgid "Gone"
+msgstr ""
+
+#: app/templates/errors/410.html:6
+msgid "Sorry, what they were looking for was deleted for all eternity!"
+msgstr ""
+
+#: app/templates/errors/500.html:1
+msgid "Server error"
+msgstr ""
+
+#: app/templates/errors/500.html:5
+msgid "Server Error"
+msgstr ""
+
+#: app/templates/errors/500.html:6
+msgid "Oops! We'll fix it ASAP."
+msgstr ""
+
+#: app/templates/home/privacy.html:1
+msgid "Privacy"
+msgstr ""
+
+#: app/templates/home/terms.html:1
+msgid "Terms of Use"
+msgstr ""
+
+#: app/users/views.py:143
+msgid "Wrong data."
+msgstr ""
+

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{{ page_title|default(config['APP_NAME']) }}{% endblock %}</title>
+        <!-- Error CSS start -->
+        {% assets "error_css" %}
+          <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}" />
+        {% endassets %}
+        <!-- Error CSS end -->
+    </head>
+    <body>{% block container %}{% endblock %}</body>
+</html>

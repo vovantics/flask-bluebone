@@ -1,0 +1,15 @@
+{% set page_title = config['APP_NAME'] + ' Account Reactivation' %}
+{% extends "layouts/emails/email_transactional.html" %}
+{% block content %}
+<p><strong>Hi, {{ username }}!</strong></p>
+
+<p>We received a login request for your deactivated {{ config['APP_NAME'] }} account. To reactivate your account, please confirm you made this request.</p>
+
+<div style="margin: 0 0 20px; text-align:center;"><!-- TODO -->
+  <a class="btn btn-primary" href="{{ reactivate_url }}">Reactivate</a>
+</div>
+
+<p>Someone requested an account reactivation by attempting to login with your password. If you did not make this request, no action is necessary - your account will remain deactivated. If you need additional assistance, <a href="#">please contact {{ config['APP_NAME'] }} Support</a>.</p>
+
+<p>The {{ config['APP_NAME'] }} Team</p>
+{% endblock%}

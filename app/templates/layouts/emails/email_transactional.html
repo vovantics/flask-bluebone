@@ -1,0 +1,72 @@
+<!-- Using the xHTML doctype is a good practice when sending HTML email. While not the only doctype you can use, it seems to have the least inconsistencies. For more information on which one may work best for you, check out the resources below.
+
+UPDATED: Now using xHTML strict based on the fact that gmail and hotmail uses it.  Find out more about that, and another great boilerplate, here: http://www.emailology.org/#1
+
+More info/Reference on doctypes in email:
+Campaign Monitor - http://www.campaignmonitor.com/blog/post/3317/correct-doctype-to-use-in-html-email/
+Email on Acid - http://www.emailonacid.com/blog/details/C18/doctype_-_the_black_sheep_of_html_email_design
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}{{ page_title|default(config['APP_NAME']) }}{% endblock %}</title>
+  <style type="text/css">{{ css|safe }}</style>
+  <!-- Targeting Windows Mobile -->
+  <!--[if IEMobile 7]>
+  <style type="text/css">
+
+  </style>
+  <![endif]-->
+
+  <!-- ***********************************************
+  ****************************************************
+  END MOBILE TARGETING
+  ****************************************************
+  ************************************************ -->
+
+  <!--[if gte mso 9]>
+  <style>
+    /* Target Outlook 2007 and 2010 */
+  </style>
+  <![endif]-->
+</head>
+<body>
+  <!-- Wrapper Table: Use a wrapper table to control the width and the background color consistently of your email. Use this approach instead of setting attributes on the body tag. -->
+  <table cellpadding="0" cellspacing="0" border="0" id="wrapper">
+  <tr>
+    <td>
+
+      <!-- Tables are the most common way to format your email consistently. Set your table widths inside cells and in most cases reset cellpadding, cellspacing, and border to zero. Use nested tables as a way to space effectively in your message. -->
+      <table cellpadding="0" cellspacing="0" border="0" align="center" id="container">
+        <tr>
+          <td align="center" valign="middle" id="header">
+            <a href="">{{ config['APP_NAME'] }}</a>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top" id="content">
+            {% block content %}{% endblock%}
+          </td>
+        </tr>
+        <tr>
+          <td align="center" valign="top" id="footer">
+            <p>
+              This email was sent to <a href="mailto:{{ email_recipient }}" target="_blank">{{ email_recipient }}</a>.<br/> Too much email? <span><a href="" title="Unsubscribe or manage your email preferences" target="_blank">Change your preferences</a>.</span>
+            </p>
+            <br/>
+            <!-- TODO: Replace 2012 with current year -->
+            <p><span>©</span> 2012 {{ config['COMPANY_NAME'] }}. | All Rights Reserved<br/><a href="#" target="_blank">Privacy Policy</a> | <a href="" target="_blank">Terms and Conditions</a></p>
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+  </table>
+  <!-- End of wrapper table -->
+</body>
+</html>

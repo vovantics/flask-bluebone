@@ -1,0 +1,127 @@
+import os
+
+
+class Config(object):
+    # ===========================================
+    # Flask config
+    #
+    APP_NAME = 'Flask Boilerplate'
+    COMPANY_NAME = 'Flask Boilerplate'
+    # Folder where the script runs
+    _basedir = os.path.abspath(os.path.dirname(__file__))
+    # 2/core TODO: What's this?
+    THREADS_PER_PAGE = 8
+    # Used if you need to email information to site administrators
+    ADMINS = frozenset(['stephenvovan@gmail.com'])  # TODO
+    # Used to sign the cookies; change it and all users will have to login again
+    SECRET_KEY = 'SecretKeyForSessionSigning'
+    # Debug mode
+    DEBUG = False
+    # Origin host for CORS
+    ORIGIN = 'http://localhost:3501'
+
+    # ===========================================
+    # Flask-WTF options
+    #
+    # Post fraud protection
+    CSRF_ENABLED = False
+    CSRF_SESSION_KEY = "somethingimpossibletoguess"
+    # Settings required to use Recaptcha
+    RECAPTCHA_USE_SSL = False
+    RECAPTCHA_PUBLIC_KEY = 'blahblahblahblahblahblahblahblahblah'
+    RECAPTCHA_PRIVATE_KEY = 'blahblahblahblahblahblahprivate'
+    RECAPTCHA_OPTIONS = {'theme': 'white'}
+
+    # ===========================================
+    # Flask-Assets: http://elsdoerfer.name/docs/webassets/environment.html
+    #
+    # If ASSETS_DEBUG = False, Bundles will be merged and filters applied.
+    # If ASSETS_DEBUG = True, Bundles will output their individual source files.
+    #ASSETS_DEBUG = False
+
+    # ===========================================
+    # Flask-Mail
+    #
+    MAIL_SERVER = 'email-smtp.us-east-1.amazonaws.com'  # TODO
+    MAIL_PORT = 25  # Amazon SES supports 25, 465 or 587
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+    MAIL_DEBUG = DEBUG
+    MAIL_USERNAME = ''  # TODO
+    MAIL_PASSWORD = ''  # TODO
+    DEFAULT_MAIL_SENDER = 'stephenvovan@gmail.com'  # TODO
+
+    # ===========================================
+    # Flask-Babel
+    #
+    ACCEPT_LANGUAGES = ['en_us', 'fr_ca']
+    BABEL_DEFAULT_LOCALE = 'en_us'
+
+
+class ProdConfig(Config):
+    # Flask config
+    DEBUG = False
+    PORT = int(os.environ.get('PORT', 5000))
+
+    # ===========================================
+    # Flask-SQLAlchemy
+    #
+    #SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')    # TODO: postgres://octopus:C1tizenKan3@localhost/skyfall
+    SQLALCHEMY_DATABASE_URI = os.environ.get('HEROKU_POSTGRESQL_MAROON')
+
+    # ===========================================
+    # Flask-Assets: http://elsdoerfer.name/docs/webassets/environment.html
+    #
+    # Static files should be manually built and served by a dedicated http server.
+    # Heroku server is a readonly filesystem except for the #{PROJECT_ROOT}/tmp/.
+    # Disable runtime compilation of css and reference asset output filepaths on CDN.
+    ASSETS_URL = 'http://s3.amazonaws.com/bucketname'  # TODO
+    ASSETS_DEBUG = False
+    ASSETS_AUTO_BUILD = False
+
+
+class DevConfig(Config):
+    # ===========================================
+    # Flask config
+    #
+    DEBUG = True
+    PORT = int(os.environ.get('PORT', 5000))
+
+    # ===========================================
+    # Flask-SQLAlchemy
+    #
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(Config._basedir, 'app.db')
+    #DATABASE_CONNECT_OPTIONS = {}  # TODO
+    SQLALCHEMY_ECHO = True
+
+    # ===========================================
+    # Flask-Assets options: http://elsdoerfer.name/docs/webassets/environment.html
+    #
+    # Enable runtime compilation of css and reference asset output filepaths on local web server.
+    ASSETS_DEBUG = False
+    ASSETS_AUTO_BUILD = True
+
+    # ===========================================
+    # Flask-Mail
+    #
+    MAIL_FAIL_SILENTLY = True
+
+
+class TestConfig(Config):
+    # ===========================================
+    # Flask config
+    #
+    TESTING = True
+    PORT = int(os.environ.get('PORT', 5000))
+
+    # ===========================================
+    # Flask-WTF options
+    #
+    # Post fraud protection
+    CSRF_ENABLED = False
+
+    # ===========================================
+    # Flask-SQLAlchemy options
+    #
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(Config._basedir, 'test.db')
+    SQLALCHEMY_ECHO = False

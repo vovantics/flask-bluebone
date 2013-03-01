@@ -1,0 +1,6 @@
+{% set page_title = title %}
+{% extends "layouts/emails/email_transactional.html" %}
+{% block content %}
+<p><strong>{{ full_name }}, {{ date|format_date }}:</strong></p>
+<p>{{ message }}</p>
+{% endblock%}
