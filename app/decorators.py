@@ -48,16 +48,17 @@ def crossdomain(origin=None, methods=None, headers=None,
 
             h = resp.headers
 
-
-
+            # http://www.w3.org/TR/cors/#access-control-allow-origin-response-header
             # If origin header from client is in list of domains allowed,
             # return back to client in Access-Control-Allow-Origin header in
             # response.
             origin_allowed = None
-            if origin is None and any(request.headers['Origin'] in o for o in current_app.config['ORIGINS_ALLOWED']):
-                origin_allowed = request.headers['Origin']
-            elif origin is not None and any(request.headers['Origin'] in o for o in (current_app.config['ORIGINS_ALLOWED'] + origin)):
-                origin_allowed = request.headers['Origin']
+            if request.headers.get('Origin') is None:
+                abort(400)
+            if origin is None and any(request.headers.get('Origin') in o for o in current_app.config['ORIGINS_ALLOWED']):
+                origin_allowed = request.headers.get('Origin')
+            elif origin is not None and any(request.headers.get('Origin') in o for o in (current_app.config['ORIGINS_ALLOWED'] + origin)):
+                origin_allowed = request.headers.get('Origin')
             else:
                 current_app.logger.warn('The remote IP [%s] requested a forbidden resource=[%s]. Returning 403.' % (request.remote_addr, request.url))
                 abort(403)

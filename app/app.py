@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, abort
 from webassets.loaders import PythonLoader as PythonAssetsLoader
 import assets
 from flaskext.babel import gettext as _
@@ -27,6 +27,7 @@ def create_app(config=None):
 
     app = Flask(__name__)
     configure_app(app, config)
+    configure_app_handlers(app)
     configure_hooks(app)
     configure_blueprints(app, blueprints)
     configure_extensions(app)
@@ -136,31 +137,14 @@ def configure_logging(app):
     app.logger.addHandler(mail_handler)
 
 
-def configure_error_handlers(app):
+def configure_app_handlers(app):
+    @app.route('/')
+    def get():
+        abort(404)
 
-    @app.errorhandler(401)
-    def unauthorized(error):
-        return render_template("errors/401.html"), 401
-
-    @app.errorhandler(403)
-    def forbidden_page(error):
-        return render_template("errors/403.html"), 403
-
-    @app.errorhandler(404)
-    def page_not_found(error):
-        return render_template("errors/404.html"), 404
-
-    @app.errorhandler(405)
-    def method_not_allowed_page(error):
-        return render_template("errors/405.html"), 405
-
-    @app.errorhandler(410)
-    def gone(error):
-        return render_template("errors/410.html"), 410
-
-    @app.errorhandler(500)
-    def server_error_page(error):
-        return render_template("errors/500.html"), 500
+    @app.route('/i-used-to-be-here/')
+    def iusedtobehere():
+        abort(410)
 
     @app.route('/robots.txt')
     def static_from_root():
@@ -171,3 +155,30 @@ def configure_error_handlers(app):
         url_root = request.url_root[:-1]
         rules = app.url_map.iter_rules()
         return render_template('sitemap.xml', url_root=url_root, rules=rules)
+
+
+def configure_error_handlers(app):
+
+    @app.errorhandler(400)
+    def bad_request(error):
+        return 'Bad Request.', 400
+
+    @app.errorhandler(401)
+    def unauthorized(error):
+        return 'Unauthorized.', 401
+
+    @app.errorhandler(403)
+    def forbidden(error):
+        return 'Forbidden Page', 403
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return 'Sorry, but the page you were trying to view does not exist.', 404
+
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return 'Method Not Allowed.', 405
+
+    @app.errorhandler(500)
+    def server_error(error):
+        return 'Internal Server Error.', 500

@@ -287,13 +287,35 @@ class TestMeta(TestCase):
 
 class TestErrors(TestCase):
 
-    # TODO def test_403_page(self):
+    def test_401(self):
+        response = self.client.get('/users/1/',
+                                   environ_base=self.ENVIRON_BASE)
+        self.assert_401(response)
 
-    def test_404_page(self):
-        response = self.client.get('/i-am-not-found/')
-        self.assert404(response)
+    def test_403(self):
+        response = self.client.get('/session/',
+                                   environ_base={
+                                   'HTTP_ORIGIN': 'http://malicious.com'
+                                   })
+        self.assert_403(response)
 
-    # TODO def test_405_page(self):
+    def test_404(self):
+        response = self.client.get('/i-am-not-found/',
+                                   environ_base=self.ENVIRON_BASE)
+        self.assert_404(response)
+
+    def test_405(self):
+        response = self.client.post('/', data={},
+                                    content_type='application/json',
+                                    environ_base=self.ENVIRON_BASE)
+        self.assert_405(response)
+
+    def test_400(self):
+        response = self.client.get('/session/',
+                                   environ_base={
+                                   'HTTP_ORIGINS': 'http://localhost:6666'
+                                   })
+        self.assert_400(response)
 
     def test_static_text_file_request(self):
         response = self.client.get('/robots.txt')
