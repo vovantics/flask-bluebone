@@ -22,7 +22,7 @@ manager = Manager(app)
 #manager = Manager(create_app())
 #app = create_app()
 manager.add_command("assets", ManageAssets(assets_env))
-manager.add_command("run", Server(host="0.0.0.0", port=app.config['PORT']))
+manager.add_command("run", Server(host=app.config['HOST'], port=app.config['PORT']))
 manager.add_command("shell", Shell())
 
 

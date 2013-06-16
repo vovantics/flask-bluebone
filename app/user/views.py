@@ -5,18 +5,19 @@ from premailer import Premailer
 from smtplib import SMTPDataError
 from urllib import quote
 
-from flask import (Blueprint, current_app, request, jsonify, \
-    render_template)
+from flask import (Blueprint, current_app, request, jsonify,
+                   render_template)
 from flask.ext.login import (login_required, current_user)
 from flaskext.babel import gettext as _
 from flask_mail import Message
 
 from app.extensions import db, mail
-from app.utils import crossdomain, get_resource_as_string
+from app.decorators import crossdomain
+from app.utils import get_resource_as_string
 from .models import User, UserDetail
-from .forms import (ActivateForm, ChangePasswordForm, \
-    DeactivateAccountForm, ProfileForm, RegisterForm, \
-    RecoverPasswordForm)
+from .forms import (ActivateForm, ChangePasswordForm,
+                    DeactivateAccountForm, ProfileForm, RegisterForm,
+                    RecoverPasswordForm)
 from .constants import USER, ACTIVE, INACTIVE, ADMIN, STAFF
 from ..session.decorators import anonymous_required
 
@@ -28,7 +29,7 @@ user = Blueprint('users', __name__, url_prefix='/users')
 
 @user.route('/', methods=['GET', 'OPTIONS'])
 @user.route('/<int:id>/', methods=['GET', 'OPTIONS'])
-@crossdomain(origin='http://localhost:3501', headers=['Content-Type'])
+@crossdomain(headers=['Content-Type'])
 @login_required
 def get(id=None):
     current_app.logger.info('Entering users.views.get()...')
@@ -62,7 +63,7 @@ def get(id=None):
 
 
 @user.route('/<string:email>/<string:activation_key>/', methods=['GET'])
-@crossdomain(origin='http://localhost:3501')
+@crossdomain()
 @anonymous_required
 def get_alt(email=None, activation_key=None):
     current_app.logger.info('Entering users.views.get_alt()...')
@@ -70,7 +71,7 @@ def get_alt(email=None, activation_key=None):
     if (email is not None and activation_key is not None):
         # Get the user.
         user = User.query.filter_by(activation_key=activation_key) \
-                     .filter_by(email=email).first()
+            .filter_by(email=email).first()
 
         # Return the user.
         if not user:
@@ -91,7 +92,7 @@ def get_alt(email=None, activation_key=None):
 
 
 @user.route('/', methods=['POST'])
-@crossdomain(origin='http://localhost:3501')
+@crossdomain()
 @anonymous_required
 def post():
     current_app.logger.info('Entering users.views.post()...')
@@ -105,7 +106,7 @@ def post():
             role_id=USER,
             status_id=ACTIVE,
             user_detail=UserDetail(),
-            )
+        )
 
         # Insert the record in our database and commit it
         db.session.add(user)
@@ -128,7 +129,7 @@ def post():
 
 
 @user.route('/<int:id>/', methods=['DELETE'])
-@crossdomain(origin='http://localhost:3501')
+@crossdomain()
 @login_required
 def delete(id):
     current_app.logger.info('Entering users.views.delete()...')
@@ -144,7 +145,7 @@ def delete(id):
 
         # Send deactivation receipt email
         css = get_resource_as_string('static/public/css/email.css')
-        reactivate_request_url = 'http://localhost:3501/#sessions/login/'
+        reactivate_request_url = '%s/#sessions/login/' % current_app.config['DOMAIN']
         current_app.logger.debug('reactivate_request_url=[%s]' % reactivate_request_url)
         html = render_template('user/emails/deactivate_receipt.html', css=css, username=user.username, email_recipient=user.email, reactivate_request_url=reactivate_request_url)
 
@@ -172,7 +173,7 @@ def delete(id):
 
 
 @user.route('/<int:id>/', methods=['PUT'])
-@crossdomain(origin='http://localhost:3501')
+@crossdomain()
 @login_required
 def put(id):
     current_app.logger.info('Entering users.views.put()...')
@@ -205,7 +206,7 @@ def put(id):
 
 
 @user.route('/password/<string:email>/<string:activation_key>/', methods=['PUT', 'OPTIONS'])
-@crossdomain(origin='http://localhost:3501', headers=['Content-Type'])
+@crossdomain(headers=['Content-Type'])
 @anonymous_required
 def put_password(email, activation_key):
     current_app.logger.info('Entering users.views.put_password()...')
@@ -238,7 +239,7 @@ def put_password(email, activation_key):
 
 
 @user.route('/activate/<string:email>/<string:activation_key>/', methods=['PUT', 'OPTIONS'])
-@crossdomain(origin='http://localhost:3501', headers=['Content-Type'])
+@crossdomain(headers=['Content-Type'])
 @anonymous_required
 def put_activate(email, activation_key):
     current_app.logger.info('Entering users.views.put_activate()...')
@@ -271,7 +272,7 @@ def put_activate(email, activation_key):
 
 
 @user.route('/password/reset/', methods=['POST', 'OPTIONS'])
-@crossdomain(origin='http://localhost:3501', headers=['Content-Type'])
+@crossdomain(headers=['Content-Type'])
 @anonymous_required
 def password_reset():
     form = RecoverPasswordForm()
@@ -286,7 +287,7 @@ def password_reset():
 
             # Send reset password email.
             css = get_resource_as_string('static/public/css/email.css')
-            change_password_url = 'http://localhost:3501/#accounts/password/reset/confirm/%s/%s/' % (quote(user.email), quote(user.activation_key))
+            change_password_url = '%s/#accounts/password/reset/confirm/%s/%s/' % (current_app.config['DOMAIN'], quote(user.email), quote(user.activation_key))
             html = render_template('user/emails/reset_password.html', css=css, username=user.username, email_recipient=user.email, change_password_url=change_password_url)
             current_app.logger.debug('change_password_url=[%s]' % change_password_url)
             p = Premailer(html)

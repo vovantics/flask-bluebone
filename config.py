@@ -7,18 +7,19 @@ class Config(object):
     #
     APP_NAME = 'Flask Boilerplate'
     COMPANY_NAME = 'Flask Boilerplate'
+    HOST = '0.0.0.0'
     # Folder where the script runs
     _basedir = os.path.abspath(os.path.dirname(__file__))
     # 2/core TODO: What's this?
     THREADS_PER_PAGE = 8
     # Used if you need to email information to site administrators
-    ADMINS = frozenset(['stephenvovan@gmail.com'])  # TODO
+    ADMINS = ['stephenvovan@gmail.com']  # TODO
     # Used to sign the cookies; change it and all users will have to login again
     SECRET_KEY = 'SecretKeyForSessionSigning'
     # Debug mode
     DEBUG = False
-    # Origin host for CORS
-    ORIGIN = 'http://localhost:3501'
+    # Origins allowed for CORS
+    ORIGINS_ALLOWED = ['http://localhost:9000']
 
     # ===========================================
     # Flask-WTF options
@@ -49,7 +50,7 @@ class Config(object):
     MAIL_DEBUG = DEBUG
     MAIL_USERNAME = ''  # TODO
     MAIL_PASSWORD = ''  # TODO
-    DEFAULT_MAIL_SENDER = 'stephenvovan@gmail.com'  # TODO
+    MAIL_DEFAULT_SENDER = 'stephenvovan@gmail.com'  # TODO
 
     # ===========================================
     # Flask-Babel
@@ -61,6 +62,7 @@ class Config(object):
 class ProdConfig(Config):
     # Flask config
     DEBUG = False
+    DOMAIN = 'http://localhost:9000'  # TODO: Change me.
     PORT = int(os.environ.get('PORT', 5000))
 
     # ===========================================
@@ -85,6 +87,7 @@ class DevConfig(Config):
     # Flask config
     #
     DEBUG = True
+    DOMAIN = 'http://localhost:9000'  # TODO: Change me.
     PORT = int(os.environ.get('PORT', 5000))
 
     # ===========================================
@@ -112,6 +115,7 @@ class TestConfig(Config):
     # Flask config
     #
     TESTING = True
+    DOMAIN = 'http://localhost:9000'  # TODO: Change me.
     PORT = int(os.environ.get('PORT', 5000))
 
     # ===========================================

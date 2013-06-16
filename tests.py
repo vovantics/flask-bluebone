@@ -15,6 +15,12 @@ from app.extensions import db, mail
 class TestCase(Base):
     """Base TestClass for your application."""
 
+    ENVIRON_BASE = {
+        'HTTP_USER_AGENT': 'Chrome',
+        'REMOTE_ADDR': '127.0.0.1',
+        'HTTP_ORIGIN': 'http://localhost:9000'
+    }
+
     def create_app(self):
         """Create and return a testing flask app."""
 
@@ -79,18 +85,23 @@ class TestCase(Base):
 
     def login(self, email, password, remember=False):
         """Helper function to login"""
-        rv = self.client.post('/session/', data={
-            'email': email,
-            'password': password,
-            'remember': remember
-            }, follow_redirects=True)
+        rv = self.client.post('/session/',
+                              data={
+                                  'email': email,
+                                  'password': password,
+                                  'remember': remember
+                              },
+                              follow_redirects=True,
+                              environ_base=self.ENVIRON_BASE
+                              )
         self.assert_200(rv)
         assert 'success' in rv.data
         return rv
 
     def logout(self):
         """Helper function to logout"""
-        rv = self.client.delete('/session/', follow_redirects=True)
+        rv = self.client.delete('/session/', follow_redirects=True,
+                                environ_base=self.ENVIRON_BASE)
         self.assert_200(rv)
         assert 'success' in rv.data
         return rv
@@ -108,7 +119,8 @@ class TestUser(TestCase):
         self.login(email='demo@example.com', password='default')
         active_user = User.query.filter_by(email='demo@example.com').first()
         assert active_user.is_active() is True
-        rv = self.client.delete('/users/%d/' % 1)
+        rv = self.client.delete('/users/%d/' % 1,
+                                environ_base=self.ENVIRON_BASE)
         self.assert_200(rv)
         deactivated_user = User.query.filter_by(email='demo@example.com').first()
         assert deactivated_user.is_active() is False
@@ -119,10 +131,11 @@ class TestUser(TestCase):
         deactivated_user = User.query.filter_by(email='demo@example.com').first()
 
         # User enters new password
-        data = {
-            'status': 'active'
-            }
-        rv = self.client.put('/users/activate/%s/%s/' % (deactivated_user.email, deactivated_user.activation_key), data=json.dumps(data), content_type='application/json')
+        data = {'status': 'active'}
+        rv = self.client.put(
+            '/users/activate/%s/%s/' % (deactivated_user.email, deactivated_user.activation_key),
+            data=json.dumps(data), content_type='application/json',
+            environ_base=self.ENVIRON_BASE)
         self.assert_200(rv)
         assert 'success' in rv.data
         active_user = User.query.filter_by(email='demo@example.com').first()
@@ -132,10 +145,10 @@ class TestUser(TestCase):
     def test_get(self):
         self.login(email='demo@example.com', password='default')
         # Get a user.
-        rv = self.client.get('/users/%d/' % 1)
+        rv = self.client.get('/users/%d/' % 1, environ_base=self.ENVIRON_BASE)
         self.assert_200(rv)
         # Get list of users.
-        rv = self.client.get('/users/')
+        rv = self.client.get('/users/', environ_base=self.ENVIRON_BASE)
         self.assert_200(rv)
         assert 'success' in rv.data
         self.logout()
@@ -147,7 +160,9 @@ class TestUser(TestCase):
             'password': 'default',
             'password_again': 'default'
         }
-        rv = self.client.post('/users/', data=json.dumps(data), content_type='application/json')
+        rv = self.client.post('/users/', data=json.dumps(data),
+                              content_type='application/json',
+                              environ_base=self.ENVIRON_BASE)
         self.assert_200(rv)
         assert 'success' in rv.data
         new_user = User.query.filter_by(email=data['email']).first()
@@ -171,7 +186,11 @@ class TestUser(TestCase):
             'bio': user.user_detail.bio,
             'url': user.user_detail.url
         }
-        rv = self.client.put('/users/%d/' % user.id, data=json.dumps(data), content_type='application/json')
+        rv = self.client.put('/users/%d/' % user.id,
+                             data=json.dumps(data),
+                             content_type='application/json',
+                             environ_base=self.ENVIRON_BASE)
+
         self.assert_200(rv)
         assert 'success' in rv.data
         user = User.query.filter_by(email=data.get('email')).first()
@@ -181,23 +200,25 @@ class TestUser(TestCase):
 
     def test_password_reset(self):
         # User enters email for account that DNE
-        data = {
-            'email': 'missing@example.com',
-            }
-        response = self.client.post('/users/password/reset/', data=json.dumps(data), content_type='application/json')
+        data = {'email': 'missing@example.com'}
+        response = self.client.post('/users/password/reset/',
+                                    data=json.dumps(data),
+                                    content_type='application/json',
+                                    environ_base=self.ENVIRON_BASE)
         assert 'Sorry, no user found for that email address.' in response.data
         self.assert_200(response)
 
         # User enters email and clicks 'Send instructions'
-        data = {
-            'email': 'demo@example.com',
-            }
+        data = {'email': 'demo@example.com'}
         user = User.query.filter_by(email=data.get('email')).first()
         assert user is not None
         assert user.activation_key is None
         with mail.record_messages() as outbox:
             # Application sends password reset email
-            response = self.client.post('/users/password/reset/', data=json.dumps(data), content_type='application/json')
+            response = self.client.post('/users/password/reset/',
+                                        data=json.dumps(data),
+                                        content_type='application/json',
+                                        environ_base=self.ENVIRON_BASE)
             assert len(outbox) == 1
             assert outbox[0].subject == "Recover your password"
         user = User.query.filter_by(email=data.get('email')).first()
@@ -207,11 +228,14 @@ class TestUser(TestCase):
         data = {
             'password': 'new password',
             'password_again': 'new password',
-            }
+        }
         user = User.query.filter_by(activation_key=user.activation_key) \
                          .filter_by(email=user.email).first()
         assert user is not None
-        rv = self.client.put('/users/password/%s/%s/' % (user.email, user.activation_key), data=json.dumps(data), content_type='application/json')
+        rv = self.client.put(
+            '/users/password/%s/%s/' % (user.email, user.activation_key),
+            data=json.dumps(data), content_type='application/json',
+            environ_base=self.ENVIRON_BASE)
         self.assert_200(rv)
         assert 'success' in rv.data
         user = User.query.filter_by(email='demo@example.com').first()
@@ -226,10 +250,12 @@ class TestUser(TestCase):
         data = {
             'password': 'new password',
             'password_again': 'new password',
-            }
+        }
         user = User.query.filter_by(email='demo@example.com').first()
         assert user is not None
-        rv = self.client.put('/users/%d/' % user.id, data=json.dumps(data), content_type='application/json')
+        rv = self.client.put('/users/%d/' % user.id, data=json.dumps(data),
+                             content_type='application/json',
+                             environ_base=self.ENVIRON_BASE)
         self.assert_200(rv)
         assert 'success' in rv.data
         user = User.query.filter_by(email='demo@example.com').first()
@@ -246,10 +272,12 @@ class TestMeta(TestCase):
             'email': 'troubled.user@example.com',
             'subject': 'Help me!',
             'message': 'I have the blue screen of death! Call the doctor!',
-            }
+        }
         with mail.record_messages() as outbox:
             # Application sends email to admin
-            response = self.client.post('/mail/', data=json.dumps(data), content_type='application/json')
+            response = self.client.post('/mail/', data=json.dumps(data),
+                                        content_type='application/json',
+                                        environ_base=self.ENVIRON_BASE)
             assert len(outbox) == 1
             subject = '[%s] Message from %s: %s' % (current_app.config['APP_NAME'], data.get('full_name'), data.get('subject'))
             assert outbox[0].subject == subject

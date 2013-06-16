@@ -5,14 +5,15 @@ from premailer import Premailer
 from urllib import quote
 from smtplib import SMTPDataError
 
-from flask import Blueprint, current_app, jsonify, render_template
+from flask import Blueprint, current_app, jsonify, render_template, request
 from flask.ext.login import login_user, current_user, logout_user, \
 login_required, confirm_login
 from flaskext.babel import gettext as _
 from flask_mail import Message
 
 from app.extensions import db, mail
-from app.utils import crossdomain, get_resource_as_string
+from app.decorators import crossdomain
+from app.utils import get_resource_as_string
 from ..user.models import User
 from .forms import LoginForm
 from .decorators import anonymous_required
@@ -23,7 +24,7 @@ session = Blueprint('session', __name__, url_prefix='/session')
 
 
 @session.route('/', methods=['POST', 'OPTIONS'])
-@crossdomain(origin='http://localhost:3501', headers='Content-Type')
+@crossdomain(headers='Content-Type')
 @anonymous_required
 def post():
     current_app.logger.info('Entering session.views.post()...')
@@ -46,7 +47,7 @@ def post():
 
                 # Send reactivation confirmation email.
                 css = get_resource_as_string('static/public/css/email.css')
-                reactivate_url = 'http://localhost:3501/#accounts/reactivate/%s/%s/' % (quote(user.email), user.activation_key)
+                reactivate_url = '%s/#accounts/reactivate/%s/%s/' % (current_app.config['DOMAIN'], quote(user.email), user.activation_key)
                 html = render_template('user/emails/reactivate_confirm.html', css=css, username=user.username, email_recipient=user.email, reactivate_url=reactivate_url)
                 current_app.logger.debug('reactivate_url=[%s]' % reactivate_url)
 
@@ -77,24 +78,24 @@ def post():
 
 
 @session.route('/', methods=['GET', 'OPTIONS'])
-@crossdomain(origin='http://localhost:3501', headers='Content-Type')
+@crossdomain(headers='Content-Type')
 def get():
     current_app.logger.info('Entering session.views.get()...')
 
+
+    current_app.logger.debug('SERVER_NAME=[%s]' % current_app.config['SERVER_NAME'])
+    current_app.logger.debug('request.url=[%s]' % request.url)
+
     if current_user.is_authenticated():
         current_app.logger.debug('Returning success; response.data=[%s]' % {'auth': True, 'username': current_user.username, 'email': current_user.email, 'id': current_user.id})
-        return jsonify(status='success',
-            data=current_user.session_as_dict()
-            )
+        return jsonify(status='success', data=current_user.session_as_dict())
     else:
         current_app.logger.debug('Returning success; response.data=[%s]' % {'auth': False})
-        return jsonify(status='success',
-            data={'auth': False}
-            )
+        return jsonify(status='success', data={'auth': False})
 
 
 @session.route('/', methods=['PUT'])
-@crossdomain(origin='http://localhost:3501')
+@crossdomain()
 @login_required
 def reauth():
     current_app.logger.info('Entering session.views.reauth()...')
@@ -117,7 +118,7 @@ def reauth():
 
 
 @session.route('/', methods=['DELETE'])
-@crossdomain(origin='http://localhost:3501')
+@crossdomain()
 @login_required
 def delete():
     current_app.logger.info('Entering session.views.delete()...')
