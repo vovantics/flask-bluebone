@@ -67,7 +67,7 @@ Commands - setup
 def setup():
     install_requirements()
     initdb()
-    update_vendor_assets()
+    #update_vendor_assets()
     lang('extract')
     lang('compile')
 
@@ -79,7 +79,11 @@ def install_requirements():
 def update_vendor_assets():
     '''Update vendor assets.'''
 
-    clean()
+    # Clean
+    local('rm -rf %s' % env.temp_path)
+    local('rm -rf bootstrap')
+    local('rm -rf app/static/.webassets-cache')
+
     local('mkdir %s' % env.temp_path)
 
     # Clone and build Bootstrap.
