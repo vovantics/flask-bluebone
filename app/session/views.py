@@ -46,7 +46,7 @@ def post():
                 db.session.commit()
 
                 # Send reactivation confirmation email.
-                css = get_resource_as_string('static/public/css/email.css')
+                css = get_resource_as_string('static/css/email.css')
                 reactivate_url = '%s/#accounts/reactivate/%s/%s/' % (current_app.config['DOMAIN'], quote(user.email), user.activation_key)
                 html = render_template('user/emails/reactivate_confirm.html', css=css, username=user.username, email_recipient=user.email, reactivate_url=reactivate_url)
                 current_app.logger.debug('reactivate_url=[%s]' % reactivate_url)

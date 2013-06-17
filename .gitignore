@@ -4,9 +4,6 @@
 venv/
 dist
 
-# Flask-Assets cache dir
-app/static/.webassets-cache/
-
 # nose coverage HTML coverage information dir
 cover/
 .coverage

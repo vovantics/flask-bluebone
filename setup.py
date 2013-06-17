@@ -23,7 +23,6 @@ setup(
         'Flask-Testing==0.4',
         'Flask-Mail',
         'Flask-Login==0.1.3',
-        'Flask-Assets==0.8',
         'nose',
         'coverage',
         'passlib',

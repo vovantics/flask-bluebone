@@ -144,7 +144,7 @@ def delete(id):
         db.session.commit()
 
         # Send deactivation receipt email
-        css = get_resource_as_string('static/public/css/email.css')
+        css = get_resource_as_string('static/css/email.css')
         reactivate_request_url = '%s/#sessions/login/' % current_app.config['DOMAIN']
         current_app.logger.debug('reactivate_request_url=[%s]' % reactivate_request_url)
         html = render_template('user/emails/deactivate_receipt.html', css=css, username=user.username, email_recipient=user.email, reactivate_request_url=reactivate_request_url)
@@ -286,7 +286,7 @@ def password_reset():
             db.session.commit()
 
             # Send reset password email.
-            css = get_resource_as_string('static/public/css/email.css')
+            css = get_resource_as_string('static/css/email.css')
             change_password_url = '%s/#accounts/password/reset/confirm/%s/%s/' % (current_app.config['DOMAIN'], quote(user.email), quote(user.activation_key))
             html = render_template('user/emails/reset_password.html', css=css, username=user.username, email_recipient=user.email, change_password_url=change_password_url)
             current_app.logger.debug('change_password_url=[%s]' % change_password_url)

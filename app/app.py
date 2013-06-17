@@ -1,11 +1,9 @@
 import os
 
 from flask import Flask, render_template, request, send_from_directory, abort
-from webassets.loaders import PythonLoader as PythonAssetsLoader
-import assets
 from flaskext.babel import gettext as _
 
-from .extensions import db, mail, login_manager, babel, assets_env
+from .extensions import db, mail, login_manager, babel
 from .user.models import User
 from config import DevConfig, ProdConfig, TestConfig
 from .utils import format_date
@@ -52,11 +50,6 @@ def configure_app(app, config):
 
 
 def configure_extensions(app):
-    # Flask-Assets
-    assets_env.init_app(app)
-    assets_loader = PythonAssetsLoader(assets)
-    for name, bundle in assets_loader.load_bundles().iteritems():
-        assets_env.register(name, bundle)
 
     # Flask-Babel
     babel.init_app(app)

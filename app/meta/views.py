@@ -26,7 +26,7 @@ def contact():
         subject = '[%s] Message from %s: %s' % (current_app.config['APP_NAME'], form.full_name.data, form.subject.data)
         date = get_current_time()
 
-        css = get_resource_as_string('static/public/css/email.css')
+        css = get_resource_as_string('static/css/email.css')
         html = render_template('meta/emails/contact.html', css=css, email_recipient=form.email.data, full_name=form.full_name.data, date=date, title=subject, message=form.message.data)
 
         p = Premailer(html)
