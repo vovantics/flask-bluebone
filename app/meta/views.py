@@ -1,3 +1,4 @@
+"""This module contains the view functions for the meta blueprint."""
 from premailer import Premailer
 
 from flask import (Blueprint, render_template, current_app, flash, \
@@ -18,6 +19,7 @@ def index():
 
 @meta.route('/mail/', methods=['POST'])
 def contact():
+    """Send an email to the ADMINS."""
     current_app.logger.info('Entering meta.views.contact()...')
 
     form = ContactUsForm()

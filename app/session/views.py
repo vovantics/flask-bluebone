@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+"""This module contains the view functions for the session blueprint."""
 
 from uuid import uuid4
 from premailer import Premailer
@@ -27,6 +27,7 @@ session = Blueprint('session', __name__, url_prefix='/session')
 @crossdomain(headers='Content-Type')
 @anonymous_required
 def post():
+    """Create a session."""
     current_app.logger.info('Entering session.views.post()...')
 
     form = LoginForm()
@@ -80,6 +81,7 @@ def post():
 @session.route('/', methods=['GET', 'OPTIONS'])
 @crossdomain(headers='Content-Type')
 def get():
+    """Get a session."""
     current_app.logger.info('Entering session.views.get()...')
 
 
@@ -98,6 +100,7 @@ def get():
 @crossdomain()
 @login_required
 def reauth():
+    """Recreate a session."""
     current_app.logger.info('Entering session.views.reauth()...')
 
     # TODO: Verify current_user.email = form.data.email
@@ -121,6 +124,7 @@ def reauth():
 @crossdomain()
 @login_required
 def delete():
+    """Delete a session."""
     current_app.logger.info('Entering session.views.delete()...')
     if current_user.is_authenticated():
         logout_user()

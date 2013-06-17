@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+"""This module contains the view functions for the user blueprint."""
 
 from uuid import uuid4
 from premailer import Premailer
@@ -32,6 +32,10 @@ user = Blueprint('users', __name__, url_prefix='/users')
 @crossdomain(headers=['Content-Type'])
 @login_required
 def get(id=None):
+    """
+    Get a user given an ID.
+    Get a list of users.
+    """
     current_app.logger.info('Entering users.views.get()...')
 
     if id is None:
@@ -66,6 +70,7 @@ def get(id=None):
 @crossdomain()
 @anonymous_required
 def get_alt(email=None, activation_key=None):
+    """Get a user given an email and activation key."""
     current_app.logger.info('Entering users.views.get_alt()...')
 
     if (email is not None and activation_key is not None):
@@ -95,6 +100,7 @@ def get_alt(email=None, activation_key=None):
 @crossdomain()
 @anonymous_required
 def post():
+    """Create a user."""
     current_app.logger.info('Entering users.views.post()...')
 
     form = RegisterForm()
@@ -132,6 +138,7 @@ def post():
 @crossdomain()
 @login_required
 def delete(id):
+    """Delete a user."""
     current_app.logger.info('Entering users.views.delete()...')
 
     # TODO: Verify that id === current_user.id
@@ -176,6 +183,7 @@ def delete(id):
 @crossdomain()
 @login_required
 def put(id):
+    """Update a user."""
     current_app.logger.info('Entering users.views.put()...')
 
     # TODO: Verify that id === current_user.id
@@ -209,6 +217,7 @@ def put(id):
 @crossdomain(headers=['Content-Type'])
 @anonymous_required
 def put_password(email, activation_key):
+    """Update a user's password."""
     current_app.logger.info('Entering users.views.put_password()...')
 
     user = User.query.filter_by(activation_key=activation_key) \
@@ -242,6 +251,7 @@ def put_password(email, activation_key):
 @crossdomain(headers=['Content-Type'])
 @anonymous_required
 def put_activate(email, activation_key):
+    """Activate a user."""
     current_app.logger.info('Entering users.views.put_activate()...')
 
     user = User.query.filter_by(activation_key=activation_key) \
@@ -275,6 +285,7 @@ def put_activate(email, activation_key):
 @crossdomain(headers=['Content-Type'])
 @anonymous_required
 def password_reset():
+    """Request a password reset for a user."""
     form = RecoverPasswordForm()
 
     # TODO: Refactor this logic so the if block is not nested
