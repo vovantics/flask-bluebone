@@ -4,9 +4,8 @@ import os
 import datetime
 
 from flaskext.script import Manager, Shell, Server, prompt_bool
-from flask.ext.assets import ManageAssets
 
-from app.extensions import db, assets_env
+from app.extensions import db
 from app import create_app
 from config import DevConfig, ProdConfig
 from app.user import User, UserDetail, ADMIN, USER, ACTIVE
@@ -21,7 +20,6 @@ manager = Manager(app)
 
 #manager = Manager(create_app())
 #app = create_app()
-manager.add_command("assets", ManageAssets(assets_env))
 manager.add_command("run", Server(host=app.config['HOST'], port=app.config['PORT']))
 manager.add_command("shell", Shell())
 
