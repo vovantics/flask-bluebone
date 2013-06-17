@@ -2,6 +2,8 @@ import os
 
 from flask import Flask, render_template, request, send_from_directory, abort
 from flaskext.babel import gettext as _
+import logging
+import logging.handlers
 
 from .extensions import db, mail, login_manager, babel
 from .user.models import User
@@ -108,8 +110,6 @@ def configure_logging(app):
         # Skip debug and test mode.
         # You can check stdout logging.
         return
-
-    import logging
 
     # Set info level on logger, which might be overwritten by handlers.
     # Suppress DEBUG messages.
