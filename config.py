@@ -7,7 +7,7 @@ class Config(object):
     #
     APP_NAME = 'Flask Boilerplate'
     COMPANY_NAME = 'Flask Boilerplate'
-    HOST = '0.0.0.0'
+    #HOST = '0.0.0.0'
     # Folder where the script runs
     _basedir = os.path.abspath(os.path.dirname(__file__))
     # 2/core TODO: What's this?
