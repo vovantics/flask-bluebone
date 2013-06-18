@@ -69,17 +69,7 @@ class ProdConfig(Config):
     # Flask-SQLAlchemy
     #
     #SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')    # TODO: postgres://octopus:C1tizenKan3@localhost/skyfall
-    SQLALCHEMY_DATABASE_URI = os.environ.get('HEROKU_POSTGRESQL_MAROON')
-
-    # ===========================================
-    # Flask-Assets: http://elsdoerfer.name/docs/webassets/environment.html
-    #
-    # Static files should be manually built and served by a dedicated http server.
-    # Heroku server is a readonly filesystem except for the #{PROJECT_ROOT}/tmp/.
-    # Disable runtime compilation of css and reference asset output filepaths on CDN.
-    ASSETS_URL = 'http://s3.amazonaws.com/bucketname'  # TODO
-    ASSETS_DEBUG = False
-    ASSETS_AUTO_BUILD = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 
 class DevConfig(Config):
@@ -96,13 +86,6 @@ class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(Config._basedir, 'app.db')
     #DATABASE_CONNECT_OPTIONS = {}  # TODO
     SQLALCHEMY_ECHO = True
-
-    # ===========================================
-    # Flask-Assets options: http://elsdoerfer.name/docs/webassets/environment.html
-    #
-    # Enable runtime compilation of css and reference asset output filepaths on local web server.
-    ASSETS_DEBUG = False
-    ASSETS_AUTO_BUILD = True
 
     # ===========================================
     # Flask-Mail
