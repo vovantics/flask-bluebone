@@ -7,7 +7,7 @@ class Config(object):
     #
     APP_NAME = 'Flask Boilerplate'
     COMPANY_NAME = 'Flask Boilerplate'
-    #HOST = '0.0.0.0'
+    HOST = '0.0.0.0'
     # Folder where the script runs
     _basedir = os.path.abspath(os.path.dirname(__file__))
     # 2/core TODO: What's this?
@@ -61,7 +61,7 @@ class Config(object):
 
 class ProdConfig(Config):
     # Flask config
-    DEBUG = False
+    DEBUG = True
     DOMAIN = 'http://localhost:9000'  # TODO: Change me.
     PORT = int(os.environ.get('PORT', 5000))
 
