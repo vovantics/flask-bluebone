@@ -12,11 +12,11 @@ env.project_name = 'flask-bluebone'
 
 
 def production():
-    """
-    Work on production environment
-    """
+    """ Work on production environment. """
     env.settings = 'production'
-    env.hosts = ['127.0.0.1']
+    env.hosts = ['0.0.0.0']
+    with lcd(env.project_root):
+        local("heroku git:remote -a powerful-lowlands-4262")
 
 
 def staging():
