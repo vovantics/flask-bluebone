@@ -137,15 +137,23 @@ Based on the [Getting Started with Python on Heroku](http://devcenter.heroku.com
 
 Anything written to standard out (stdout) or standard error (stderr) is captured into your heroku logs. Error mails are sent the second the exception happens using Flask's native [logging handlers](http://flask.pocoo.org/docs/errorhandling/)
 
+
+Prerequisites:
+
 1. Install the [Heroku Toolbelt](https://toolbelt.heroku.com/) on your local workstation
 
 1. Login to the Heroku CLI tool
 
         $ heroku login
 
-1. Create the app
+1. Create a new application on Heroku.
 
         $ heroku create -s cedar
+
+
+
+
+
 
 1. Deploy your code
 
